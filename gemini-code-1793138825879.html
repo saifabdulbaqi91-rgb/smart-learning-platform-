@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصة التعليمية الذكية | Smart Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #14346b;
+            --primary-light: #1d4ca3;
+            --accent: #b8892b;
+            --bg: #f6f3ec;
+            --card-bg: #ffffff;
+            --text-dark: #0b1b3a;
+            --text-muted: #667088;
+            --success: #0f7b5a;
+        }
+        * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { margin: 0; background-color: var(--bg); color: var(--text-dark); line-height: 1.6; }
+        
+        /* Navbar */
+        .navbar { background: var(--card-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 45px; height: 45px; background: var(--primary); color: white; border-radius: 12px; display: grid; place-items: center; font-size: 24px; font-weight: 800; }
+        .brand-text h1 { margin: 0; font-size: 20px; font-weight: 800; color: var(--primary); }
+        .brand-text p { margin: 0; font-size: 13px; color: var(--text-muted); }
+        
+        /* Dashboard Container */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        
+        /* Stats Section */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: var(--card-bg); padding: 25px; border-radius: 16px; border: 1px solid #e4dfd3; display: flex; align-items: center; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .stat-icon { font-size: 32px; }
+        .stat-info h3 { margin: 0; font-size: 28px; color: var(--primary); }
+        .stat-info p { margin: 0; color: var(--text-muted); font-size: 14px; font-weight: 600; }
+
+        /* Subjects Section */
+        .section-title { font-size: 22px; font-weight: 800; margin-bottom: 20px; color: var(--text-dark); display: flex; align-items: center; gap: 10px; }
+        .lessons-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        
+        /* Lesson Card */
+        .lesson-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid #e4dfd3; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .lesson-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(20, 52, 107, 0.1); border-color: var(--primary-light); }
+        .lesson-cover { height: 160px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); display: grid; place-items: center; color: white; font-size: 48px; }
+        .lesson-body { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .badge { display: inline-block; padding: 4px 12px; background: #dff4ea; color: var(--success); border-radius: 50px; font-size: 12px; font-weight: 700; margin-bottom: 12px; align-self: flex-start; }
+        .lesson-title { font-size: 20px; font-weight: 800; margin: 0 0 10px; }
+        .lesson-desc { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.6; }
+        
+        .btn-start { margin-top: auto; display: block; text-align: center; background: var(--primary); color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 700; transition: 0.3s; }
+        .btn-start:hover { background: var(--accent); }
+
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">
+            <div class="logo-icon">ع</div>
+            <div class="brand-text">
+                <h1>المنصة التعليمية الذكية</h1>
+                <p>مساحة التعلم التفاعلي والإثراء المعرفي</p>
+            </div>
+        </div>
+        <div>
+            <span style="font-weight: 600; color: var(--text-muted);">مرحباً، طالب علم 👋</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-info"><h3>١</h3><p>وحدة دراسية</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info"><h3>+١٠</h3><p>نشاط تفاعلي</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info"><h3 style="color: var(--accent);">١٠٠٪</h3><p>جاهزية للتعلم</p></div>
+            </div>
+        </div>
+
+        <!-- قسم الدروس -->
+        <h2 class="section-title"><span>📖</span> قسم اللغة العربية - المنهج التفاعلي</h2>
+        
+        <div class="lessons-grid">
+            
+            <!-- بطاقة درس يوم لا ينسى -->
+            <div class="lesson-card">
+                <div class="lesson-cover">🩸</div>
+                <div class="lesson-body">
+                    <span class="badge">الصف الرابع</span>
+                    <h3 class="lesson-title">يوم لا يُنسى</h3>
+                    <p class="lesson-desc">درس تفاعلي يغرس قيم العطاء والمسؤولية المجتمعية من خلال قصة مشوقة عن التبرع بالدم ومبادرات الأطفال.</p>
+                    <a href="lesson_yom_la_yansa.html" class="btn-start">ابدأ التعلم التفاعلي ←</a>
+                </div>
+            </div>
+
+            <!-- بطاقة فارغة للمستقبل -->
+            <div class="lesson-card" style="opacity: 0.6; filter: grayscale(1);">
+                <div class="lesson-cover" style="background: #ccc;">⏳</div>
+                <div class="lesson-body">
+                    <span class="badge" style="background: #eee; color: #888;">قريباً</span>
+                    <h3 class="lesson-title">الدرس القادم</h3>
+                    <p class="lesson-desc">سيتم إضافة المزيد من الدروس التفاعلية المدعومة بالذكاء الاصطناعي والصوتيات قريباً.</p>
+                    <a href="#" class="btn-start" style="background: #aaa; pointer-events: none;">مغلق حالياً</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

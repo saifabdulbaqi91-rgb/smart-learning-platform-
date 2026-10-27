@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>درس: يوم لا ينسى - تفاعلي ذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b1b3a;--bg:#f6f3ec;--card:#fff;--text:#1b2540;--mute:#667088;--line:#e4dfd3;--pri:#14346b;--pri2:#1d4ca3;--onpri:#fff;--gold:#b8892b;--ok:#0f7b5a;--okbg:#dff4ea;--warn:#92600a;--warnbg:#fdf0d2;--bad:#a12727;--badbg:#fbe3e3;--shadow:0 10px 30px -12px rgba(11,27,58,.25)}
+[data-theme=dark]{--ink:#e9eefc;--bg:#0b1220;--card:#131c30;--text:#e7ecf8;--mute:#93a0bd;--line:#26324d;--pri:#6c9bff;--pri2:#8db1ff;--onpri:#0b1220;--gold:#e2b252;--ok:#4fd1a1;--okbg:#0f3b2e;--warn:#f3c56b;--warnbg:#3b2e0f;--bad:#ff9b9b;--badbg:#431a1a;--shadow:0 10px 30px -12px #000}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:500 18px/1.9 Cairo,sans-serif;transition:background .3s,color .3s}
+button{font:inherit;cursor:pointer}
+a{text-decoration:none}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 22px;background:var(--card);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+.mark{width:42px;height:42px;border-radius:12px;background:var(--pri);color:var(--onpri);display:grid;place-items:center;font:700 24px Amiri,serif;flex:none}
+.brand b{display:block;font-weight:800;line-height:1.3;color:var(--ink)}.brand small{color:var(--mute);font-size:13px}
+.ibtn{border:1px solid var(--line);background:transparent;color:var(--text);width:42px;height:42px;border-radius:12px;font-size:18px}.ibtn:hover{background:var(--bg)}
+.ring{width:46px;height:46px;border-radius:50%;background:conic-gradient(var(--gold) calc(var(--p,0)*1%),var(--line) 0);display:grid;place-items:center;flex:none}
+.ring span{width:36px;height:36px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:11px;font-weight:800}
+.shell{display:grid;grid-template-columns:280px 1fr;gap:22px;max-width:1280px;margin:0 auto;padding:22px}
+#outline{position:sticky;top:84px;align-self:start;max-height:calc(100vh - 108px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+#outline h4{margin:8px 8px 4px;color:var(--mute);font-size:13px}
+.oi{display:flex;gap:10px;align-items:center;width:100%;text-align:right;border:0;background:transparent;color:var(--text);padding:8px 10px;border-radius:10px;font-size:15px;line-height:1.5}
+.oi:hover{background:var(--bg)}.oi i{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font:700 12px Cairo;flex:none}
+.oi.on{background:var(--pri);color:var(--onpri)}.oi.done i{background:var(--ok);border-color:var(--ok);color:#fff}
+.stage{min-width:0}
+.slide{display:none;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:42px 46px;box-shadow:var(--shadow);min-height:62vh;animation:in .45s cubic-bezier(.2,.7,.2,1)}
+.slide.on{display:block}
+@keyframes in{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.cover{background:linear-gradient(135deg,rgba(20,52,107,.09),rgba(184,137,43,.12))}
+.kicker{display:inline-block;color:var(--gold);font-weight:800;font-size:14px;margin-bottom:4px}
+h1,h2{margin:0 0 14px;color:var(--ink);line-height:1.45}h1{font-size:46px;font-weight:800}h2{font-size:28px;font-weight:800}
+.lead{font-size:21px;color:var(--mute);max-width:60ch}.meta,.hint,.mute{color:var(--mute);font-size:14px}
+.obj{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:26px 0}.obj div{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--card);font-size:16px}.obj b{display:block;font-size:28px}
+.btn{border:0;background:var(--pri);color:var(--onpri);padding:11px 22px;border-radius:12px;font-weight:700}.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;color:var(--pri);border:2px solid var(--pri)}.btn.sm{padding:6px 16px;font-size:15px}.btn:disabled{opacity:.35;cursor:default}.btn.playing{background:var(--bad);color:#fff}
+.tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:6px 0 18px}
+.passage{font:400 30px/2.3 Amiri,serif;margin:0;color:var(--ink)}.ck{border-radius:8px;padding:2px 3px;transition:background .25s}.ck.cur{background:rgba(184,137,43,.32)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:20px}
+.fc{perspective:900px;border:0;background:none;height:190px;position:relative;padding:0}
+.fc .f{position:absolute;inset:0;display:grid;place-items:center;padding:16px;text-align:center;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--text);box-shadow:var(--shadow);backface-visibility:hidden;transition:transform .6s;font-size:26px}
+.fc .b{transform:rotateY(180deg);background:var(--pri);color:var(--onpri);font-size:16px;line-height:1.7}
+.fc.flip .f:not(.b){transform:rotateY(-180deg)}.fc.flip .b{transform:rotateY(0)}
+.tabs2{display:flex;gap:6px;margin-top:20px}
+.in-tab{border:1px solid var(--line);border-bottom:0;background:var(--bg);color:var(--text);padding:8px 16px;border-radius:12px 12px 0 0;font-weight:600;opacity:.7}.in-tab.on{background:var(--card);opacity:1;color:var(--pri)}
+.pane{display:none;border:1px solid var(--line);border-radius:0 14px 14px 14px;padding:12px;background:var(--card)}.pane.on{display:block}
+textarea{width:100%;height:120px;border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--bg);color:var(--text);font:inherit;font-size:17px;resize:vertical}textarea:focus{outline:2px solid var(--pri2)}
+canvas{display:block;width:100%;height:170px;background:#fffdf8;border:1px dashed var(--line);border-radius:10px;touch-action:none;cursor:crosshair}
+.lnk{border:0;background:var(--bad);color:#fff;padding:5px 12px;border-radius:8px;margin-top:8px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.fb{display:none;margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:700;border-right:5px solid}.fb.show{display:block;animation:in .3s}
+.fb.high{background:var(--okbg);color:var(--ok);border-color:var(--ok)}.fb.med{background:var(--warnbg);color:var(--warn);border-color:var(--gold)}.fb.low{background:var(--badbg);color:var(--bad);border-color:var(--bad)}
+.ans{display:none;margin-top:14px;padding:16px 20px;border-radius:14px;background:var(--okbg);border-right:5px solid var(--ok)}.ans.show{display:block;animation:in .3s}
+.ans h5{margin:0 0 4px;color:var(--ok);font-size:15px}.enr{margin-top:10px;padding:10px 14px;border-radius:10px;background:var(--card);border-right:4px solid var(--gold);font-size:16px}
+.nav{position:sticky;bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center}.dots i{width:9px;height:9px;border-radius:50%;background:var(--line);cursor:pointer}.dots i.d{background:var(--ok)}.dots i.on{background:var(--gold);transform:scale(1.6)}
+.present .shell{grid-template-columns:1fr;max-width:1500px}.present #outline{display:none}.present .passage{font-size:42px}.present .slide{min-height:78vh}
+svg text{font-family:Cairo}.node{cursor:pointer}.node circle{transition:.3s}.node:hover circle,.node.on circle{stroke:#b8892b!important;stroke-width:5}
+#info{margin-top:12px;padding:14px 18px;border-radius:14px;background:var(--bg);border-right:5px solid var(--gold);min-height:64px}
+@media(max-width:900px){.shell{grid-template-columns:1fr;padding:12px}#outline{display:none}.openo #outline{display:block;position:fixed;inset:64px 12px auto;z-index:30;max-height:70vh}.ibtn.m{display:inline-block}.slide{padding:24px 18px}h1{font-size:32px}.passage{font-size:24px}.dots{display:none}}
+@media print{body{background:#fff;color:#000}.top,#outline,.nav,.tabs2,.pane,.acts,.tools,.fb,.lnk{display:none!important}.shell{display:block;padding:0}.slide{display:block!important;box-shadow:none;border:0;page-break-after:always;animation:none;min-height:0}.ans{display:block!important;background:none;border:1px solid #999}.cover{background:none}}
+#bd{display:none}
+@media(max-width:900px){#bd.on{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:25}}
+</style>
+</head>
+<body>
+<div id="bd"></div>
+<header class="top">
+  <a href="index.html" class="ibtn" style="display:grid;place-items:center" title="العودة للرئيسية">🏠</a>
+  <button class="ibtn m" id="menu" title="فهرس الدرس">☰</button>
+  <div class="brand"><div class="mark">ع</div><div><b>يوم لا يُنسى</b><small>اللغة العربية · وحدة تفاعلية</small></div></div>
+  <div class="ring" title="التقدم"><span>٠٪</span></div>
+  <button class="ibtn" id="themeBtn" title="الوضع الليلي">🌓</button>
+  <button class="ibtn" id="presBtn" title="وضع العرض (F)">⛶</button>
+  <button class="ibtn" onclick="window.print()" title="طباعة / PDF">🖨️</button>
+</header>
+<div class="shell">
+  <aside id="outline"></aside>
+  <main class="stage">
+    <div id="stage"></div>
+    <nav class="nav"><button class="btn ghost" id="prev">→ السابق</button><div class="dots" id="dots"></div><button class="btn" id="next">التالي ←</button></nav>
+  </main>
+</div>
+<script>
+// --- البيانات التعليمية الشاملة للدرس ---
+const D={"paras": [
+  "اجْتَمَعَتِ الْعَائِلَةُ حَوْلَ مَائِدَةِ الْغَدَاءِ، وَبَعْدَ دَقَائِقَ وَصَلَ أَخِي فَرِحاً، وَعَلَى شَفَتَيْهِ الْكَثِيرُ مِنَ الْكَلَامِ. بَدَأَ حَدِيثَهُ قَائِلاً: يَوْمٌ بِأَلْفِ يَوْمٍ مِنْ حَيَاتِي الْجَامِعِيَّةِ، عَرَفْنَا فِيهِ مَعْنَى الْعَطَاءِ؛ بِمُشَارَكَتِنَا فِي حَمْلَةِ التَّبَرُّعِ بِالدَّمِ، الَّتِي تُقِيمُهَا إِدَارَةُ الْجَامِعَةِ. لَنْ أَنْسَى تِلْكَ الِابْتِسَامَاتِ الَّتِي ارْتَسَمَتْ عَلَى وُجُوهِ زُمَلَائِي، وَكُلُّ مِنْهُمْ مُسْتَلْقٍ عَلَى سَرِيرٍ، فِي غُرْفَةِ قِطَافِ الدَّمِ؛ لِيَتَبَرَّعَ بِبَعْضٍ مِنْ دَمِهِ، آمِلاً أَنْ تَكُونَ هَذِهِ الْقَطَرَاتُ شِفَاءً لِغَيْرِهِ.",
+  "قَالَتْ كِنْدَةُ: حَقّاً إِنَّهُ يَوْمٌ لَا يُنْسَى... يَا لَيْتَنِي كُنْتُ مَعَكُمْ. أَجَابَنِي: فَكِّرِي بِطَرِيقَةٍ تُلَائِمُ عُمْرَكِ يَا كِنْدَةُ، لِلْمُشَارَكَةِ مَعَنَا؛ فَنَتَقَاسَمَ مَعاً الشُّعُورَ بِالْمَسْؤُولِيَّةِ. لَمَعَتْ فِكْرَةٌ بِرَأْسِي، فَسَأَلْتُ أَبِي: هَلْ لَكَ أَنْ تُسَاعِدَنِي، فِي تَصْمِيمِ لَوْحَةٍ تُوَضِّحُ فِكْرَتِي لِزُمَلَائِي فِي الصَّفِّ؟ أَجَابَنِي: نَعَمْ يَا صَغِيرَتِي. قَالَتْ أُمِّي: وَأَنَا سَأُسَاعِدُكِ أَيْضاً، أَحْضِرِي الْأَلْوَانَ وَالْأَوْرَاقَ لِنَبْدَأَ. رَسَمْتُ قَطْرَةَ دَمٍ وَسْطَ اللَّوْحَةِ وَلَوَّنْتُهَا، ثُمَّ أَحَطْتُهَا بِأَسْهُمٍ، تُشِيرُ إِلَى الْمُسْتَفِيدِينَ مِنْهَا؛ فِي الْجِهَةِ الْيُمْنَى طِفْلَةٌ عَلَى سَرِيرِهَا وَالطَّبِيبُ بِجِوَارِهَا، وَفِي أَعْلَى اللَّوْحَةِ يُرْفَعُ عَلَمُ الْجُمْهُورِيَّةِ الْعَرَبِيَّةِ السُّورِيَّةِ، وَفِي الْجِهَةِ الْيُسْرَى طِفْلٌ رَضِيعٌ. ثُمَّ رَسَمْتُ مَجْمُوعَةً مِنَ الْمَرْضَى؛ لِأُظْهِرَ نَمَاذِجَ مُتَنَوِّعَةً مِنْ أَفْرَادِ الْمُجْتَمَعِ، الَّذِينَ قَدْ يَحْتَاجُونَ إِلَى نَقْلِ الدَّمِ. ارْتَسَمَتْ فِي مُخَيِّلَتِي صُورَةُ زُمَلَائِي، وَالدَّهْشَةُ تَعْلُو وُجُوهَهُمْ، عِنْدَ عَرْضِ فِكْرَتِي.",
+  "مَعَ بُزُوغِ شَمْسِ الصَّبَاحِ انْطَلَقْتُ فَرِحَةً إِلَى مَدْرَسَتِي، وَأَخْبَرْتُ مُعَلِّمَتِي عَنْ رَغْبَتِي بِتَقْدِيمِ عَرْضٍ لِزُمَلَائِي. فَشَجَّعَتْنِي وَحَدَّدَتْ مُدَّةَ عَشْرِ دَقَائِقَ لَهُ. وَعِنْدَمَا حَانَ الْوَقْتُ، عَرَضْتُ اللَّوْحَةَ الَّتِي جَهَّزْتُهَا، مُتَحَدِّثَةً عَنْ فَوَائِدِ هَذِهِ الْحَمْلَةِ لِلْفَرْدِ وَالْمُجْتَمَعِ، وَمَشَاعِرِ الْمُشَارِكِينَ فِيهَا، كَمَا أَخْبَرَنِي أَخِي. وَعَلَى الْفَوْرِ، بَادَرَ صَدِيقِي كِنَانٌ قَائِلاً: عُمْرُنَا لَا يَسْمَحُ لَنَا بِالتَّبَرُّعِ بِالدَّمِ، فَمَا رَأْيُكُمْ أَنْ نُشَارِكَ فِي الْحَمْلَةِ الْقَادِمَةِ، بِالذَّهَابِ إِلَى مَرْكَزِ نَقْلِ الدَّمِ؛ لِاسْتِقْبَالِ الْمُتَبَرِّعِينَ؟ أَثْنَتِ الْمُعَلِّمَةُ عَلَى مُبَادَرَتِنَا، وَوَافَقَتْ أَنْ تُشَارِكَنَا مَعَ مُمَثِّلٍ عَنِ الْإِدَارَةِ، وَمَنْ يَرْغَبُ مِنْ أَهْلِنَا. فِي الْمَوْعِدِ الْمُحَدَّدِ تَوَجَّهَ فَرِيقُنَا بِرِفْقَةِ الْمُعَلِّمَةِ وَبَعْضِ الْأَهْلِ، وَوَقَفْنَا صَفَّيْنِ مُتَقَابِلَيْنِ، أَمَامَ بَابِ مَرْكَزِ نَقْلِ الدَّمِ؛ نَسْتَقْبِلُ الْمُشَارِكِينَ فِي التَّبَرُّعِ بِالدَّمِ، وَنُوَدِّعُهُمْ بِالْأَزْهَارِ تَشْجِيعاً وَامْتِنَاناً. شَكَرَتْنَا إِدَارَةُ الْمَرْكَزِ لِمُبَادَرَتِنَا اللَّطِيفَةِ، وَعُدْنَا نَحْمِلُ ذِكْرَيَاتٍ جَمِيلَةً سَتُرَافِقُنَا مَدَى الْحَيَاةِ لِيَوْمٍ لَا يُنْسَى؛ فَقَدْ وَجَدْنَا طَرِيقَةً لِلْمُشَارَكَةِ تُلَائِمُ أَعْمَارَنَا."
+], 
+"vocab": [
+  ["غرفة قطاف الدم", "غرفةٌ مُعقَّمَةٌ يُسحَبُ فيها الدَّمُ من المُتبرِّعِينَ، ويُحفَظُ وَيُبَرَّدُ."], 
+  ["التبرع", "العطاء من غير طلب أو أجر."], 
+  ["بزوغ الشمس", "بدء طلوع الشمس."]
+], 
+"qs": [
+  {
+    "sec": "الاستماع والملاحظة",
+    "meta": "السؤال رقم: ١ (أستمع إلى النص)",
+    "text": "أخبر زملائي عن الموضوع الذي يتحدث عنه النَّص.",
+    "id": "q1",
+    "kw": "تبرع|دم, عطاء|مسؤولية|مشاركة",
+    "ph": "عم يتحدث النص؟...",
+    "ans": "يتحدث النص عن المشاركة في حملة للتبرع بالدم، وأثر هذه المشاركة الإيجابي في غرس قيم العطاء والمسؤولية.",
+    "enr": ""
+  },
+  {
+    "sec": "الفهم القرائي",
+    "meta": "السؤال رقم: ٢ (أكمل الجدول)",
+    "text": "أكمل الجدول الآتي بما يُناسبه: (السبب والنتيجة)",
+    "id": "q2",
+    "kw": "ذهاب|استقبال|متبرعين, أثنت|معلمة|وداع, شكرت|إدارة|ذكريات",
+    "ph": "اكتب النتائج المترتبة على اقتراح كنان...",
+    "ans": "<ul><li>السبب (اقتراح كنان): الذهاب إلى مركز نقل الدم لاستقبال المتبرعين.</li><li>النتيجة الأولى: أثنت المعلمة وتوجه الفريق لوداع المتبرعين.</li><li>النتيجة الثانية: شكرت إدارة المركز المبادرة، وعاد الأطفال يحملون ذكريات جميلة.</li></ul>",
+    "enr": ""
+  }
+]};
+
+// بيانات الخريطة البصرية (الـ SVG)
+const NODES=[
+  {x:520,y:190,e:'👧🧑‍⚕️',fs:30,t:'طفلة مريضة وطبيب',d:'في الجهة اليمنى من اللوحة: طفلة مريضة ينتظر الطبيب دماً يساعد على شفائها.'},
+  {x:80,y:190,e:'👶',fs:42,t:'طفل رضيع',d:'في الجهة اليسرى: طفل رضيع قد يحتاج إلى نقل الدم.'},
+  {x:300,y:48,e:'🚩',fs:42,t:'العلم الوطني',d:'في أعلى اللوحة يُرفع العلم: فالتبرع بالدم خدمة للوطن وللمجتمع كله.'},
+  {x:300,y:332,e:'🤒👵',fs:30,t:'مرضى مختلفون',d:'نماذج متنوعة من أفراد المجتمع الذين قد يحتاجون إلى نقل الدم.'}
+];
+
+// دوال مساعدة
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const AR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const attr=s=>String(s).replace(/"/g,'&quot;');
+let cur=0, rate=0.85, state={};
+
+// استرجاع وحفظ التقدم
+try{state=JSON.parse(localStorage.getItem('yom-la-yansa-state')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('yom-la-yansa-state',JSON.stringify(state))}catch(e){}};
+
+// دالة تقسيم النص لجمل لتسهيل القراءة الصوتية
+const chunksOf=t=>{const o=[];(t.match(/[^،؛.:؟?!]+[،؛.:؟?!]*/g)||[t]).forEach(c=>{/[\u0621-\u064A]/.test(c)||!o.length?o.push(c):o[o.length-1]+=c});return o};
+
+// توليد قوالب الأسئلة
+function qHTML(q,i){return `<span class="kicker">${q.sec}</span><div class="meta">${q.meta}</div><h2>${q.text}</h2>
+<div class="tabs2"><button class="in-tab on" data-m="text">⌨️ لوحة المفاتيح</button><button class="in-tab" data-m="draw">✍️ كتابة يدوية</button></div>
+<div class="pane text on"><textarea id="${q.id}" placeholder="${attr(q.ph)}"></textarea></div>
+<div class="pane draw"><canvas height="170"></canvas><button class="lnk" data-act="clear">🗑️ مسح السبورة</button></div>
+<div class="acts"><button class="btn" data-act="check">🧠 تحقق ذكي من الإجابة</button><button class="btn ghost" data-act="rev">💡 عرض الإجابة النموذجية</button></div>
+<div class="fb"></div>
+<div class="ans"><h5>الإجابة النموذجية</h5>${q.ans}${q.enr?`<div class="enr">${q.enr}</div>`:''}</div>`}
+
+// تعريف شرائح الدرس
+const slides=[
+  {t:'مقدمة الدرس',k:'البداية',render:()=>`
+    <div class="cover slide on" style="text-align:center">
+      <span class="kicker">الوحدة التعليمية التفاعلية</span>
+      <h1>يوم لا ينسى 🌟</h1>
+      <p class="lead" style="margin: 0 auto 20px;">رحلة تفاعلية في رحاب العطاء، المسؤولية المجتمعية، والمبادرات الإنسانية النابعة من قلوب الصغار.</p>
+      <div class="obj">
+        <div><b>${AR(D.paras.length)}</b>مقاطع للقراءة</div>
+        <div><b>${AR(D.vocab.length)}</b>مفردات لغوية</div>
+        <div><b>${AR(D.qs.length)}</b>تدريبات ذكية</div>
+      </div>
+      <button class="btn" onclick="go(1)" style="margin-top:20px; font-size:18px">ابدأ رحلة التعلم 🚀</button>
+    </div>
+  `},
+  {t:'تأمل اللوحة الفنية',k:'تأمل بصري',render:()=>`
+    <h2>اللوحة التوضيحية وتأمل العناصر البصرية</h2>
+    <p class="meta">انقر على الدوائر في اللوحة التخيلية أدناه لاستكشاف العناصر الفنية ومكونات فكرة (كندة):</p>
+    <div style="display:grid;grid-template-columns:1fr;gap:20px;align-items:center">
+      <svg viewBox="0 0 600 380" style="background:var(--bg);border:1px solid var(--line);border-radius:16px;width:100%;max-height:400px">
+        <rect x="210" y="140" width="180" height="100" rx="14" fill="var(--card)" stroke="var(--gold)" stroke-width="3"/>
+        <text x="300" y="195" text-anchor="middle" font-size="24" font-weight="bold" fill="var(--ink)">🩸 قطرة الدم</text>
+        ${NODES.map((n,i)=>`
+          <g class="node" onclick="showNode(${i})">
+            <line x1="300" y1="190" x2="${n.x}" y2="${n.y}" stroke="var(--line)" stroke-dasharray="4" stroke-width="2"/>
+            <circle cx="${n.x}" cy="${n.y}" r="32" fill="var(--card)" stroke="var(--pri)" stroke-width="3"/>
+            <text x="${n.x}" y="${n.y+10}" text-anchor="middle" font-size="${n.fs}">${n.e}</text>
+          </g>
+        `).join('')}
+      </svg>
+      <div id="info">اضغط على أي رمز دائري في اللوحة أعلاه لقراءة دلالته.</div>
+    </div>
+  `},
+  ...D.paras.map((p,i)=>({t:`قراءة: المقطع ${AR(i+1)}`,k:'القراءة',render:()=>`
+    <span class="kicker">النص القرائي - المقطع ${AR(i+1)}</span>
+    <h2>قراءة واعية مع التنظيم الصوتي</h2>
+    <div class="tools">
+      <button class="btn sm" id="spk-${i}" onclick="readPara(${i})">🔊 تشغيل القراءة الذكية</button>
+      <span class="mute">المساعد الصوتي يتوقف عند الفواصل لتوضيح المعنى.</span>
+    </div>
+    <p class="passage" id="pas-${i}">${chunksOf(p).map((c,ci)=>`<span class="ck" id="c-${i}-${ci}">${c} </span>`).join('')}</p>
+  `})),
+  {t:'معجم الكلمات',k:'المعجم',render:()=>`
+    <span class="kicker">الثروة اللغوية</span>
+    <h2>معجم الكلمات والدلالات 📖</h2>
+    <p class="meta">انقر على أي بطاقة لاكتشاف المعنى (تقنية الاسترجاع النشط)</p>
+    <div class="cards">
+      ${D.vocab.map(v=>`<div class="fc" onclick="this.classList.toggle('flip')"><div class="f"><b>${v[0]}</b><small class="meta" style="display:block;margin-top:10px">انقر للقلب 🔄</small></div><div class="f b">${v[1]}</div></div>`).join('')}
+    </div>
+  `},
+  ...D.qs.map((q,i)=>({t:`سؤال تفاعلي ${AR(i+1)}`,k:'التدريب',render:()=>qHTML(q,i)})),
+  {t:'ختام الدرس',k:'الملخص',render:()=>`
+    <div class="cover slide on" style="text-align:center">
+      <span class="kicker">تهانينا يا بطل! 🎉</span>
+      <h1>أتممت الدرس بنجاح</h1>
+      <p class="lead" style="margin:0 auto">لقد استكشفت معاني العطاء، وتدربت على مهارات التفكير والقراءة الواعية.</p>
+      <div style="margin:40px 0">
+         <button class="btn" onclick="window.print()" style="font-size:18px; margin: 5px">طباعة ملخص الدرس 🖨️</button>
+         <a href="index.html" class="btn ghost" style="font-size:18px; margin: 5px">العودة للمنصة 🏠</a>
+      </div>
+    </div>
+  `}
+];
+
+// --- بناء الفهرس الجانبي ---
+function buildOutline(){
+  $('#outline').innerHTML=`<h4>فهرس محتويات الدرس</h4>`+slides.map((s,i)=>`
+    <button class="oi ${i===cur?'on':''} ${state['s'+i]?'done':''}" onclick="go(${i})">
+      <i>${i===cur?'▶':(state['s'+i]?'✓':AR(i+1))}</i>
+      <span style="flex:1;min-width:0;text-overflow:ellipsis;overflow:hidden">${s.t}</span>
+    </button>
+  `).join('');
+  $('#dots').innerHTML=slides.map((s,i)=>`<i class="${i===cur?'on':(state['s'+i]?'d':'')}" onclick="go(${i})" title="${s.t}"></i>`).join('');
+  
+  let doneCount = Object.keys(state).filter(k=>k.startsWith('s')&&state[k]).length;
+  let pct = Math.round((doneCount / slides.length) * 100);
+  $('.ring').style.setProperty('--p', pct);
+  $('.ring span').innerText = AR(pct)+'%';
+}
+
+// دالة الانتقال بين الشرائح
+function go(n){
+  stopSpeech(); // إيقاف الصوت عند تغيير الشريحة
+  cur=Math.max(0, Math.min(slides.length-1, n));
+  state['s'+cur]=true; save();
+  buildOutline();
+  $('#stage').innerHTML=`<div class="slide on">${slides[cur].render()}</div>`;
+  initSlideControls();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// دالة تهيئة أزرار الشريحة (الأسئلة والسبورة)
+function initSlideControls(){
+  $('#prev').disabled = cur===0;
+  $('#next').disabled = cur===slides.length-1;
+
+  // تبديل بين الكيبورد والرسم
+  $$('.tabs2').forEach(tb=>{
+    let tabs = $$('.in-tab', tb), panes = $$('.pane', tb.parentElement);
+    tabs.forEach((t,ti)=>{
+      t.onclick=()=>{
+        tabs.forEach(x=>x.classList.remove('on')); panes.forEach(x=>x.classList.remove('on'));
+        t.classList.add('on'); panes[ti].classList.add('on');
+        if(panes[ti].classList.contains('draw')){
+          let cvs = panes[ti].querySelector('canvas');
+          if(!cvs.getAttribute('init')){ cvs.width=cvs.parentElement.clientWidth; initCvs(cvs); cvs.setAttribute('init','1'); }
+        }
+      }
+    });
+  });
+
+  // أزرار التحقق والإجابة
+  $$('.acts').forEach(a=>{
+    let qCard = a.closest('.slide');
+    let ta = qCard.querySelector('textarea');
+    let fb = qCard.querySelector('.fb');
+    let ans = qCard.querySelector('.ans');
+    let checkBtn = a.querySelector('[data-act="check"]');
+    let revBtn = a.querySelector('[data-act="rev"]');
+
+    if(checkBtn && ta){
+      let qObj = D.qs.find(x=>x.id===ta.id);
+      checkBtn.onclick=()=>{
+        if(!ta.value.trim()){
+          fb.className='fb show low'; fb.innerText='❌ الرجاء كتابة إجابة أولاً قبل التحقق.'; return;
+        }
+        // تحقق دلالي ذكي
+        let score = evaluateText(ta.value, qObj.kw);
+        fb.className='fb show '+(score>=75?'high':score>=40?'med':'low');
+        fb.innerHTML=score>=75?`✅ ممتاز! إجابتك متوافقة مع المعنى المطلوب.`:(score>=40?`⚠️ إجابة قريبة، لكنها تحتاج لتفاصيل إضافية.`:`❌ الإجابة تحتاج لمراجعة. فكر مرة أخرى أو شاهد الإجابة النموذجية.`);
+      }
+    }
+    if(revBtn && ans){
+      revBtn.onclick=()=>{
+        ans.classList.toggle('show');
+        revBtn.innerText = ans.classList.contains('show')?'🙈 إخفاء الإجابة':'💡 عرض الإجابة النموذجية';
+      }
+    }
+  });
+
+  // مسح السبورة
+  $$('[data-act="clear"]').forEach(b=>{
+    b.onclick=()=>{
+      let cvs = b.parentElement.querySelector('canvas');
+      cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height);
+    }
+  });
+}
+
+// التقييم الدلالي للكلمات المفتاحية
+function evaluateText(txt, kwStr){
+  let norm = txt.replace(/[\u064B-\u065F]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+  let groups = kwStr.split(',');
+  let matched=0;
+  groups.forEach(g=>{
+    let syns=g.split('|');
+    let found=false;
+    for(let s of syns){
+      let clean = s.trim().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي');
+      if(norm.includes(clean)){ found=true; break; }
+    }
+    if(found) matched++;
+  });
+  return (matched/groups.length)*100;
+}
+
+// تهيئة السبورة (الرسم بالأصبع أو الماوس)
+function initCvs(cvs){
+  let ctx=cvs.getContext('2d'); ctx.lineWidth=4; ctx.lineCap='round'; ctx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--pri');
+  let drawing=false;
+  const pos=e=>{let r=cvs.getBoundingClientRect(); let ev=e.touches?e.touches[0]:e; return {x:ev.clientX-r.left, y:ev.clientY-r.top};}
+  const start=e=>{drawing=true; draw(e);}
+  const end=e=>{drawing=false; ctx.beginPath();}
+  const draw=e=>{if(!drawing)return; e.preventDefault(); let p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(p.x,p.y);}
+  cvs.onmousedown=cvs.ontouchstart=start; cvs.onmouseup=cvs.onmouseleave=cvs.ontouchend=end; cvs.onmousemove=cvs.ontouchmove=draw;
+}
+
+// عرض تفاصيل عقدة الخريطة (SVG)
+window.showNode=idx=>{
+  let n = NODES[idx];
+  $$('.node').forEach((nd,i)=>nd.classList.toggle('on', i===idx));
+  $('#info').innerHTML=`<b style="font-size:18px">${n.t}</b><p style="margin:5px 0 0">${n.d}</p>`;
+}
+
+// --- نظام القراءة الصوتية (TTS) ---
+let synth = window.speechSynthesis, utter=null, isSpk=false;
+function readPara(idx){
+  if(!synth) return alert('عذراً، متصفحك لا يدعم القراءة الصوتية.');
+  let btn = $(`#spk-${idx}`);
+  if(isSpk){ stopSpeech(); return; }
+
+  let fullText = D.paras[idx];
+  let chunks = chunksOf(fullText);
+  let cIdx=0;
+
+  btn.innerText="إيقاف القراءة 🛑"; btn.classList.add('playing'); isSpk=true;
+
+  function speakNext(){
+    if(!isSpk || cIdx>=chunks.length){ stopSpeech(); return; }
+    $$('.ck').forEach(x=>x.classList.remove('cur'));
+    let el = $(`#c-${idx}-${cIdx}`);
+    if(el) el.classList.add('cur');
+
+    utter = new SpeechSynthesisUtterance(chunks[cIdx].trim());
+    utter.lang='ar-SA'; utter.rate=rate;
+    // وقفات طبيعية
+    let pause=300;
+    if(chunks[cIdx].endsWith('.')||chunks[cIdx].endsWith('؟')) pause=800;
+    else if(chunks[cIdx].endsWith('؛')||chunks[cIdx].endsWith('...')) pause=500;
+
+    utter.onend=()=>{ cIdx++; setTimeout(speakNext, pause); };
+    utter.onerror=stopSpeech;
+    synth.speak(utter);
+  }
+  speakNext();
+}
+
+function stopSpeech(){
+  if(synth) synth.cancel();
+  isSpk=false;
+  $$('[id^="spk-"]').forEach(b=>{b.innerText="🔊 تشغيل القراءة الذكية"; b.classList.remove('playing');});
+  $$('.ck').forEach(x=>x.classList.remove('cur'));
+}
+
+// --- أزرار التحكم العلوية والجانبية ---
+$('#themeBtn').onclick=()=>{
+  let isDark = document.body.toggleAttribute('data-theme');
+  document.body.dataset.theme = isDark?'dark':'light';
+};
+$('#presBtn').onclick=()=>document.body.classList.toggle('present');
+$('#menu').onclick=()=>document.body.classList.toggle('openo');
+$('#next').onclick=()=>go(cur+1);
+$('#prev').onclick=()=>go(cur-1);
+document.onkeydown=e=>{
+  if(e.key==='ArrowLeft') go(cur+1);
+  if(e.key==='ArrowRight') go(cur-1);
+};
+
+// بدء التشغيل
+go(0);
+</script>
+</body>
+</html>
